@@ -32,6 +32,12 @@ export class Book {
 
     @Prop({ default: false })
     rejected: boolean;
+
+    @Prop({ type: [Number], default: [] })
+    ratings: number[];
+
+    @Prop({ type: Number, default: 0 })
+    averageRating: number;
 }
 
 export const BookSchema = SchemaFactory.createForClass(Book);

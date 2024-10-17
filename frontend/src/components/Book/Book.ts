@@ -9,6 +9,7 @@ export type Book = {
     pages?: string;
     DOI?: string;
     status?: string;
+    averageRating?: number;
 };
 
 export const DefaultEmptyBook: Book = {

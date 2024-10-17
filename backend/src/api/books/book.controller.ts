@@ -105,10 +105,12 @@ export class BookController {
     @Get('/check-duplicate/:doi')
     async checkDuplicate(@Param('doi') doi: string) {
         try {
-            const result = await this.bookService.checkDuplicate(doi);
+            // Decode the DOI parameter
+            const decodedDoi = decodeURIComponent(doi);
+            const result = await this.bookService.checkDuplicate(decodedDoi);
             if (result.exists) {
                 return {
-                    message: `The book exists in the database.`,
+                    message: 'The book exists in the database.',
                     rejected: result.rejected,
                 };
             } else {
@@ -124,5 +126,28 @@ export class BookController {
                 { cause: error },
             );
         }
+    }
+
+    @Post('/:id/rate')
+    async rateBook(@Param('id') id: string, @Body('rating') rating: number) {
+      try {
+        if (rating < 1 || rating > 5) {
+          throw new HttpException('Rating must be between 1 and 5', HttpStatus.BAD_REQUEST);
+        }
+        const updatedBook = await this.bookService.addRating(id, rating);
+        return { message: 'Rating added successfully', averageRating: updatedBook.averageRating };
+      } catch (error) {
+        throw new HttpException('Failed to add rating', HttpStatus.INTERNAL_SERVER_ERROR);
+      }
+    }
+  
+    @Get('/:id/rating')
+    async getBookRating(@Param('id') id: string) {
+      try {
+        const averageRating = await this.bookService.getAverageRating(id);
+        return { averageRating };
+      } catch (error) {
+        throw new HttpException('Failed to get average rating', HttpStatus.INTERNAL_SERVER_ERROR);
+      }
     }
 }

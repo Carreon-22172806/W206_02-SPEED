@@ -23,7 +23,8 @@ function ShowBookList() {
 
     const checkForDuplicates = async (doi: string) => {
         try {
-            const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/books/check-duplicate/${doi}`);
+            const encodedDoi = encodeURIComponent(doi);
+            const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/books/check-duplicate/${encodedDoi}`);
             const data = await res.json();
             if (data.message) {
                 setDuplicateMessage(data.message);
@@ -35,24 +36,6 @@ function ShowBookList() {
             console.log('Error checking duplicate: ' + err);
         }
     };
-
-    const bookList =
-        books.length === 0
-            ? 'There is no book record in the system!'
-            : books.map((book, k) => (
-                <div key={k}>
-                    <BookCard book={book} />
-                    {/* Assuming each book has a DOI to check for duplicates */}
-                    <button 
-  onClick={() => book.DOI && checkForDuplicates(book.DOI)}
-  disabled={!book.DOI}  
->
-  Check for Duplicate
-</button>
-
-                    
-                </div>
-            ));
 
     return (
         <div className='ShowBookList'>
@@ -72,7 +55,22 @@ function ShowBookList() {
                         <hr />
                     </div>
                 </div>
-                <div className="list">{bookList}</div>
+                <div className="list">
+                    {books.length === 0
+                        ? 'There is no book record in the system!'
+                        : books.map((book, k) => (
+                            <div key={k}>
+                                <BookCard book={book} />
+                                <button 
+                                    onClick={() => book.DOI && checkForDuplicates(book.DOI)}
+                                    disabled={!book.DOI}  
+                                >
+                                    Check for Duplicate
+                                </button>
+                            </div>
+                        ))
+                    }
+                </div>
                 <div>{duplicateMessage && <p>{duplicateMessage}</p>}</div>
             </div>
         </div>

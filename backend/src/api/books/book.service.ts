@@ -53,4 +53,24 @@ export class BookService {
         }
         return { exists: false, rejected: false };
     }
+
+    async addRating(id: string, rating: number): Promise<Book> {
+        const book = await this.bookModel.findById(id);
+        if (!book) {
+          throw new Error('Book not found');
+        }
+    
+        book.ratings.push(rating);
+        book.averageRating = book.ratings.reduce((a, b) => a + b) / book.ratings.length;
+    
+        return book.save();
+      }
+    
+      async getAverageRating(id: string): Promise<number> {
+        const book = await this.bookModel.findById(id);
+        if (!book) {
+          throw new Error('Book not found');
+        }
+        return book.averageRating;
+      }
 }
