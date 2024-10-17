@@ -79,6 +79,9 @@ const CreateBookComponent = () => {
                                 <input type="text" placeholder="Book Pages" name="pages" className="form-control" value={book.pages} onChange={onChange}/>
                             </div>
                             <br /> 
+                            <div className="form-group">
+                                <input type="hidden" name="status" value="under-review" />
+                            </div>
                             <button type="submit" className="btn btn-outline-warning btn-block mt-4 mb-4 w-100"> Submit Article</button>
                         </form>
                     </div>

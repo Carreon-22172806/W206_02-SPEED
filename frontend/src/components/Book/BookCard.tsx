@@ -17,7 +17,11 @@ const BookCard = ({ book }: IProp) => {
     }
 
     const onClick = () => {
+<<<<<<< Updated upstream
         router.push(`/show-book/${book._id}`);
+=======
+        router.push(`/show-book-details/${book._id}`)
+>>>>>>> Stashed changes
     };
 
     const handleRating = async (newRating: number) => {

@@ -1,38 +1,33 @@
-'use client'
+'use client';
 
 import React, { useState, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { Book, DefaultEmptyBook } from "./Book";
 import Link from 'next/link';
 import HomeNavs from "../HomeNavs";
+import BookCard from "./BookCard";
 
 function ShowBookDetails() {
     const [book, setBook] = useState<Book>(DefaultEmptyBook);
+    const params = useParams(); // Get URL parameters
+    const router = useRouter();
+    const id = params.id; // Extract 'id' from URL
 
-    const id = useParams<{ _id:string }>()._id;
-    const navigate = useRouter();
-    
     useEffect(() => {
-        fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/books/${id}`)
-        .then((res) => {
-            return res.json()
-        })
-        .then((json) => {
-            setBook(json);
-        })
-        .catch((err) => {
-            console.log('Error from ShowBookDetails: ' + err);
-        });
+        if (id) {
+            fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/books/${id}`)
+                .then((res) => res.json())
+                .then((json) => setBook(json))
+                .catch((err) => console.log('Error from ShowBookDetails: ' + err));
+        }
     }, [id]);
 
     const onDeleteClick = (id: string) => {
-        fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/books/${id}`, {method: 'DELETE'})
-        .then((res) => {
-            navigate.push('/');
-        })
-        .catch((err) => {
-            console.log('Error from ShowBookDetails_deleteClick: ' + err);
-        });
+        fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/books/${id}`, { method: 'DELETE' })
+            .then(() => {
+                router.push('/');
+            })
+            .catch((err) => console.log('Error from ShowBookDetails_deleteClick: ' + err));
     };
 
     const BookItem = (
@@ -42,7 +37,7 @@ function ShowBookDetails() {
                     <tr>
                         <th scope='row'> 1 </th>
                         <td> Article ID </td>
-                        <td>{book._id = '6707d2af3aa830875991d6d0'}</td>
+                        <td>{id}</td>
                     </tr>
                     <tr>
                         <th scope='row'> 2 </th>
@@ -95,7 +90,6 @@ function ShowBookDetails() {
     );
 
     return (
-
         <div className="ShowBookDetails">
             <HomeNavs />
             <div className="container">
@@ -105,21 +99,17 @@ function ShowBookDetails() {
                     </div>
                     <br />
                     <div className="col-md-8 m-auto">
-                        <h1 className="display-4 text-center">Book&quot;s Record</h1>
-                        <p className="lead text-center">View Book&quot;s Info</p>
+                        <h1 className="display-4 text-center">Book's Record</h1>
+                        <p className="lead text-center">View Book's Info</p>
                         <hr /> <br />
                     </div>
                     <div className="col-md-10 m-auto">{BookItem}</div>
                     <div className="col-md-6 m-auto">
-                        <button type="button" className="btn btn-outline-danger btn-lg btn-block" onClick={() => {
-                            onDeleteClick(book._id || "");
-                        }}>
-                            Delete Book
-                        </button>
+
                     </div>
                     <div className="col-md-6 m-auto">
-                        <Link href={`/edit-book/${book._id}`} className="btn btn-outline-info btn-lg btn-block">
-                        Edit Book
+                        <Link href={`/edit-book/${id}`} className="btn btn-outline-info btn-lg btn-block">
+                            Edit Book
                         </Link>
                     </div>
                 </div>

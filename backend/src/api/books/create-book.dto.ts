@@ -1,4 +1,4 @@
-import { Date } from "mongoose";
+import { Date, ObjectId } from "mongoose";
 
 export class CreateBookDto {
     title: string;

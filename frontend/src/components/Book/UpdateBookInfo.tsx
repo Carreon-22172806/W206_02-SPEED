@@ -35,7 +35,7 @@ function UpdateBookInfo() {
 
         fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/books/${id}`, {method: 'PUT', headers: {"Content-Type": "application/json"}, body: JSON.stringify(book)})
             .then((res) => {
-                router.push(`/show-books/${id}`);
+                router.push(`/show-book-details/${id}`);
             })
             .catch((err) => {
                 console.log("Error from UpdateBookInfo: " + err);
