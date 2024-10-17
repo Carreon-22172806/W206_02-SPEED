@@ -1,9 +1,6 @@
-import { Body, Controller, Delete,
-    Get, HttpException, HttpStatus, 
-    Param, Post, Put } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpException, HttpStatus, Param, Post, Put } from '@nestjs/common';
 import { BookService } from './book.service';
 import { CreateBookDto } from './create-book.dto';
-import { error } from 'console';
 
 @Controller('api/books')
 export class BookController {
@@ -18,7 +15,7 @@ export class BookController {
     async findAll() {
         try {
             return await this.bookService.findAll();
-        } catch {
+        } catch (error) {
             throw new HttpException(
                 {
                     status: HttpStatus.NOT_FOUND,
@@ -30,11 +27,27 @@ export class BookController {
         }
     }
 
+    @Get('/rejected')
+    async findRejected() {
+        try {
+            return await this.bookService.findRejected();
+        } catch (error) {
+            throw new HttpException(
+                {
+                    status: HttpStatus.NOT_FOUND,
+                    error: 'No Rejected Articles Found',
+                },
+                HttpStatus.NOT_FOUND,
+                { cause: error },
+            );
+        }
+    }
+
     @Get('/:id')
     async findOne(@Param('id') id: string) {
         try {
             return this.bookService.findOne(id);
-        } catch {
+        } catch (error) {
             throw new HttpException(
                 {
                     status: HttpStatus.NOT_FOUND,
@@ -46,14 +59,12 @@ export class BookController {
         }
     }
 
-    //Create/add a book
     @Post('/')
-    async addBook(@Body() createBookDto: CreateBookDto)
-    {
+    async addBook(@Body() createBookDto: CreateBookDto) {
         try {
             await this.bookService.create(createBookDto);
-            return { message: 'This book has been added successfully.'}
-        } catch {
+            return { message: 'This book has been added successfully.' };
+        } catch (error) {
             throw new HttpException(
                 {
                     status: HttpStatus.BAD_REQUEST,
@@ -66,14 +77,11 @@ export class BookController {
     }
 
     @Post('/:id')
-    async updateBook(
-        @Param('id') id: string,
-        @Body() createBookDto: CreateBookDto,
-    ) {
+    async updateBook(@Param('id') id: string, @Body() createBookDto: CreateBookDto) {
         try {
             await this.bookService.update(id, createBookDto);
-            return { message: 'This book has been updated successfully.'};
-        } catch {
+            return { message: 'This book has been updated successfully.' };
+        } catch (error) {
             throw new HttpException(
                 {
                     status: HttpStatus.BAD_REQUEST,
@@ -88,19 +96,18 @@ export class BookController {
     @Delete('/:id')
     async deleteBook(@Param('id') id: string) {
         try {
-            return await await this.bookService.delete(id);
-        } catch {
+            return await this.bookService.delete(id);
+        } catch (error) {
             throw new HttpException(
                 {
                     status: HttpStatus.NOT_FOUND,
-                    error: 'No such a book',
+                    error: 'No such book',
                 },
                 HttpStatus.NOT_FOUND,
                 { cause: error },
             );
         }
     }
-
 
     @Get('/check-duplicate/:doi')
     async checkDuplicate(@Param('doi') doi: string) {
