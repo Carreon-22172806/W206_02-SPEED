@@ -18,6 +18,9 @@ const HomeNavs = () => {
                 <li>
                     <Link href="/login-account/{id}"> Logout </Link>
                 </li>
+                <li>
+                    <Link href="/show-rejected-books"> Rejected </Link>
+                </li>
             </ul>
         </nav>
     );
