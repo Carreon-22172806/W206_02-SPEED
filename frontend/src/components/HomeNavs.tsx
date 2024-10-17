@@ -13,7 +13,10 @@ const HomeNavs = () => {
                     <Link href="/edit-book/{id}">Edit Article</Link>
                 </li>
                 <li>
-                    <Link href="/show-book/{id}">Show Book List</Link>
+                    <Link href="/show-book">Show Book List</Link>
+                </li>
+                <li>
+                    <Link href="/queue-article-moderation"> Queued Articles </Link>
                 </li>
                 <li>
                     <Link href="/login-account/{id}"> Logout </Link>

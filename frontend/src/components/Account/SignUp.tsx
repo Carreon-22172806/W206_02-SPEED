@@ -88,6 +88,7 @@ const SignUpAccount = () => {
                                 </td>
                                 </tr>   
                                 <tr>
+                                <td>
                                 <label htmlFor="username" className="form-label">Username</label>
                             <input
                                 type="text"
@@ -98,6 +99,8 @@ const SignUpAccount = () => {
                                 onChange={handleChange}
                                 required
                             />
+                            </td>
+                            <td>
                             <label htmlFor="password" className="form-label">Password</label>
                             <input
                                 type="password"
@@ -108,7 +111,32 @@ const SignUpAccount = () => {
                                 onChange={handleChange}
                                 required
                             />
-                                </tr>                        
+                            </td>
+                            </tr>
+                            <tr >
+                            <td>
+                            <label htmlFor="email" className="form-label">Email</label>
+                            <input
+                                type="text"
+                                className="form-control"
+                                id="email"
+                                name="email"
+                                value={signup.email}
+                                onChange={handleChange}
+                                required
+                            />
+                            </td>
+                            <label htmlFor="mobile" className="form-label">Mobile</label>
+                            <input
+                                type="text"
+                                className="form-control"
+                                id="mobile"
+                                name="mobile"
+                                value={signup.mobile}
+                                onChange={handleChange}
+                                required
+                            />
+                            </tr>                     
 
                             </table>
                         </div>
