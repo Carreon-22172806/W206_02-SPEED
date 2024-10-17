@@ -17,7 +17,7 @@ export class BookController {
     @Get('/')
     async findAll() {
         try {
-            return this.bookService.findAll();
+            return await this.bookService.findAll();
         } catch {
             throw new HttpException(
                 {
@@ -96,6 +96,31 @@ export class BookController {
                     error: 'No such a book',
                 },
                 HttpStatus.NOT_FOUND,
+                { cause: error },
+            );
+        }
+    }
+
+
+    @Get('/check-duplicate/:doi')
+    async checkDuplicate(@Param('doi') doi: string) {
+        try {
+            const result = await this.bookService.checkDuplicate(doi);
+            if (result.exists) {
+                return {
+                    message: `The book exists in the database.`,
+                    rejected: result.rejected,
+                };
+            } else {
+                return { message: 'The book does not exist in the database.' };
+            }
+        } catch (error) {
+            throw new HttpException(
+                {
+                    status: HttpStatus.INTERNAL_SERVER_ERROR,
+                    error: 'Unable to check for duplicates',
+                },
+                HttpStatus.INTERNAL_SERVER_ERROR,
                 { cause: error },
             );
         }
