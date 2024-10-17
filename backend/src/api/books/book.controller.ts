@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, HttpException, HttpStatus, Param, Post, Put } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpException, HttpStatus, Param, Patch, Post, Put } from '@nestjs/common';
 import { BookService } from './book.service';
 import { CreateBookDto } from './create-book.dto';
 
@@ -157,4 +157,9 @@ export class BookController {
         throw new HttpException('Failed to get average rating', HttpStatus.INTERNAL_SERVER_ERROR);
       }
     }
+
+    @Patch(':id/reject')
+    rejectBook(@Param('id') bookId: string) {
+    return this.bookService.rejectBook(bookId);
+  }
 }

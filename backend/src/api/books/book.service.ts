@@ -72,6 +72,14 @@ export class BookService {
         if (!book) {
           throw new Error('Book not found');
         }
-        return book.averageRating;
+        return book.averageRating
       }
+
+      async rejectBook(bookId: string): Promise<Book> {
+        const book = await this.bookModel.findById(bookId);
+        if (!book) {
+          throw new NotFoundException('Book not found');
+        }
+        book.status = 'rejected';
+        return await book.save();
 }
