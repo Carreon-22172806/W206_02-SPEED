@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import BookCardAdmin from "./BookCard-admin";
+import BookCard from "./BookCard";
 import { Book } from './Book';
 import HomeNavs from "../HomeNavs";
 
-function ShowBookList() {
+function ShowBookListUser() {
     const [books, setBooks] = useState<Book[]>([]);
     const [duplicateMessage, setDuplicateMessage] = useState<string>('');
 
@@ -15,10 +15,9 @@ function ShowBookList() {
             setBooks(data);
         })
         .catch((err) => {
-            console.log('Error from ShowBookList: ' + err);
+            console.log('Error from ShowBookListUser: ' + err);
         });
     }, []);
-    
 
     const checkForDuplicates = async (doi: string) => {
         try {
@@ -37,13 +36,13 @@ function ShowBookList() {
     };
 
     return (
-        <div className='ShowBookList'>
+        <div className='ShowBookListUser'>
             <HomeNavs />
             <div className="container">
                 <div className="row">
                     <div className="col-md-12">
                         <br />
-                        <h2 className="display-4 text-center">Moderation Dashboard</h2>
+                        <h2 className="display-4 text-center">SPEED Database</h2>
                     </div>
                     <div className="col-md-11">
                         <Link href='/create-book' className='btn btn-outline-warning float-right'>
@@ -56,10 +55,10 @@ function ShowBookList() {
                 </div>
                 <div className="list">
                     {books.length === 0
-                        ? 'No modifications needed!'
+                        ? 'There is no book record in the system!'
                         : books.map((book, k) => (
                             <div key={k}>
-                                <BookCardAdmin book={book} />
+                                <BookCard book={book} />
                                 <button 
                                     onClick={() => book.DOI && checkForDuplicates(book.DOI)}
                                     disabled={!book.DOI}  
@@ -76,4 +75,4 @@ function ShowBookList() {
     );
 }
 
-export default ShowBookList;
+export default ShowBookListUser;

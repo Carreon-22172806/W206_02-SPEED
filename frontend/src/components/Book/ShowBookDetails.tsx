@@ -5,7 +5,6 @@ import { useParams, useRouter } from "next/navigation";
 import { Book, DefaultEmptyBook } from "./Book";
 import Link from 'next/link';
 import HomeNavs from "../HomeNavs";
-import BookCard from "./BookCard";
 
 function ShowBookDetails() {
     const [book, setBook] = useState<Book>(DefaultEmptyBook);
@@ -25,7 +24,7 @@ function ShowBookDetails() {
     const onDeleteClick = (id: string) => {
         fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/books/${id}`, { method: 'DELETE' })
             .then(() => {
-                router.push('/');
+                router.push('/show-book/{id}');
             })
             .catch((err) => console.log('Error from ShowBookDetails_deleteClick: ' + err));
     };
@@ -82,7 +81,7 @@ function ShowBookDetails() {
                     <tr>
                         <th scope='row'> 10 </th>
                         <td> Status </td>
-                        <td>{book.status}</td>
+                        <td>{book.status = "under-review"}</td>
                     </tr>
                 </tbody>
             </table>
@@ -105,7 +104,7 @@ function ShowBookDetails() {
                     </div>
                     <div className="col-md-10 m-auto">{BookItem}</div>
                     <div className="col-md-6 m-auto">
-
+                        
                     </div>
                     <div className="col-md-6 m-auto">
                         <Link href={`/edit-book/${id}`} className="btn btn-outline-info btn-lg btn-block">

@@ -3,11 +3,12 @@ import { Book } from './Book';
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 
+
 interface IProp {
     book?: Book;
 }
 
-const BookCard = ({ book }: IProp) => {
+const BookCardAdmin = ({ book }: IProp) => {
     const router = useRouter();
     const [rating, setRating] = useState<number | null>(null);
     const [averageRating, setAverageRating] = useState<number>(book?.averageRating || 0);
@@ -17,7 +18,7 @@ const BookCard = ({ book }: IProp) => {
     }
 
     const onClick = () => {
-        router.push(`/show-book/${book._id}`)
+        router.push(`/show-book-details/${book._id}`)
     };
 
     const handleRating = async (newRating: number) => {
@@ -43,34 +44,25 @@ const BookCard = ({ book }: IProp) => {
     };
 
     return (
-        <div className="card-container">
+        <div className="card-container3">
             <img src="https://images.unsplash.com/photo-1495446815901-a7297e633e8d" alt="Books" height={200} onClick={onClick} />
             <div className="details">
-                <h1>{book.title}</h1>
-                <h3>{book.author} <br /> {book.yob}</h3>
-                <p>{book.journalName}</p>
-                <p>{book._id}</p>
-                <div className="rating">
-                    <p>Average Rating: {averageRating.toFixed(1)}</p>
-                    <div>
-                        {[1, 2, 3, 4, 5].map((star) => (
-                            <span
-                                key={star}
-                                onClick={(e) => {
-                                    e.stopPropagation();
-                                    handleRating(star);
-                                }}
-                                style={{ cursor: 'pointer', color: star <= (rating || 0) ? 'gold' : 'gray' }}
-                            >
-                                ★
-                            </span>
-                        ))}
-                    </div>
-                </div>
+                <p> Article Title:            {book.title} </p>
+                <p> Article Author: {book.author} </p>
+                <p> Article Year of Published: {book.yob} </p>
+                <p> Article Journal/Conference Name {book.journalName} </p>
+                <p> Article ID {book._id}</p>
+                <p> Article Status {book.status}</p>
+                <p> Average Rating: {averageRating.toFixed(1)}</p>
                 <br />
+
+
+                <Link href={`/show-book-details/${book._id}`} className='btn btn-outline-warning float-right'>
+                    Configure Article
+                </Link>
             </div>
         </div>
     );
 };
 
-export default BookCard;
+export default BookCardAdmin;

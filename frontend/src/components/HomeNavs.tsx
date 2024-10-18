@@ -10,7 +10,7 @@ const HomeNavs = () => {
                     <Link href="/create-book">Create Article</Link>
                 </li>
                 <li>
-                    <Link href="/edit-book/{id}">Edit Article</Link>
+                    <Link href="/moderation/{id}">Moderate Articles</Link>
                 </li>
                 <li>
                     <Link href="/show-book/{id}">Show Book List</Link>

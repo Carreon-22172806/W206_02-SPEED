@@ -1,12 +1,11 @@
 'use client'
 
-import ShowBookDetails from "@/components/Book/ShowBookDetails";
-import ShowBookList from "@/components/Book/ShowBookList";
+import ShowBookListUser from "@/components/Book/ShowBookList-user";
 
-export default function ShowBook() {
+export default function UserShowBook() {
     return (
         <main>
-            <ShowBookList />
+            <ShowBookListUser />
         </main>
     )
 }
