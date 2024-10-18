@@ -25,7 +25,7 @@ const CreateBookComponent = () => {
             .then((res) => {
                 console.log("Successfully submitted", res);
                 setBook(DefaultEmptyBook);
-                navigate.push("/show-book"); //Redirect after successful submission
+                navigate.push("/show-book/{id}"); //Redirect after successful submission
             })
             .catch((err) => {
                 console.error('There was a problem with the fetch operation: ', err);
@@ -46,7 +46,7 @@ const CreateBookComponent = () => {
                         <form noValidate onSubmit={onSubmit}>
                             {/* TITLE */}
                             <div className="form-group">
-                                <input type="text" placeholder="Title of the Book" name="title" className="form-control" value={book.title} onChange={onChange}/>
+                                <input type="text" placeholder="Article Title" name="title" className="form-control" value={book.title} onChange={onChange}/>
                             </div>
                             <br />
                             {/* AUTHOR */}
@@ -66,19 +66,23 @@ const CreateBookComponent = () => {
                             <br />
                             {/* VOLUME */}
                             <div className="form-group">
-                                <input type="number" placeholder="Book Volumes" name="volume" className="form-control" value={book.volume} onChange={onChange}/>
+                                <input type="number" placeholder="Article Volumes" name="volume" className="form-control" value={book.volume} onChange={onChange}/>
                             </div>
                             <br />
                             {/* NUMBER */}
                             <div className="form-group">
-                                <input type="number" placeholder="Book Number" name="number" className="form-control" value={book.number} onChange={onChange}/>
+                                <input type="number" placeholder="Article Number" name="number" className="form-control" value={book.number} onChange={onChange}/>
                             </div>
                             <br />
                             {/* PAGES */}
                             <div className="form-group">
-                                <input type="text" placeholder="Book Pages" name="pages" className="form-control" value={book.pages} onChange={onChange}/>
+                                <input type="text" placeholder="Number of Pages" name="pages" className="form-control" value={book.pages} onChange={onChange}/>
                             </div>
-                            <br /> 
+                            <br />
+                            {/* DOI */}
+                            <div className="form-group">
+                                <input type="text" placeholder="Article DOI" name="DOI" className="form-control" value={book.DOI} onChange={onChange}/>
+                            </div>
                             <div className="form-group">
                                 <input type="hidden" name="status" value="under-review" />
                             </div>

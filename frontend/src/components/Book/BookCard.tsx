@@ -17,11 +17,7 @@ const BookCard = ({ book }: IProp) => {
     }
 
     const onClick = () => {
-<<<<<<< Updated upstream
-        router.push(`/show-book/${book._id}`);
-=======
-        router.push(`/show-book-details/${book._id}`)
->>>>>>> Stashed changes
+        router.push(`/show-book/${book._id}`)
     };
 
     const handleRating = async (newRating: number) => {
@@ -54,6 +50,7 @@ const BookCard = ({ book }: IProp) => {
                 <h3>{book.author} <br /> {book.yob}</h3>
                 <p>{book.journalName}</p>
                 <p>{book._id}</p>
+                <p>{book.status}</p>
                 <div className="rating">
                     <p>Average Rating: {averageRating.toFixed(1)}</p>
                     <div>

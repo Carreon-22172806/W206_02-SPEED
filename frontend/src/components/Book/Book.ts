@@ -1,4 +1,5 @@
 export type Book = {
+    _id? : string;
     title?: string;
     author?: string[];
     journalName?: string;
@@ -12,6 +13,7 @@ export type Book = {
 };
 
 export const DefaultEmptyBook: Book = {
+    _id: undefined,
     title: '',
     author: [],
     journalName: '',
@@ -20,5 +22,6 @@ export const DefaultEmptyBook: Book = {
     number: undefined,
     pages: '',
     DOI: '',
-    status: '',
+    status: 'under-review',
+    averageRating: undefined,
 }
