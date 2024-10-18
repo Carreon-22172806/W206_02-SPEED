@@ -1,0 +1,29 @@
+/* Navigation.module.css */
+
+.navbar {
+    background-color: #1E1E24; /* Bootstrap primary color */
+    padding: 10px 20px;
+}
+
+.navList {
+    list-style-type: none; /* Removes default list styling */
+    margin: 0;
+    padding: 0;
+    display: flex; /* Aligns items in a row */
+    justify-content: space-around; /* Spaces out the links evenly */
+}
+
+.navList li {
+    margin: 0 10px; /* Adds space between list items */
+}
+
+.navList li a {
+    color: #21A179; /* Link color */
+    text-decoration: none; /* Removes underline */
+    font-weight: bold; /* Makes the text bold */
+    transition: color 0.3s ease; /* Smooth transition for hover effect */
+}
+
+.navList li a:hover {
+    color: #FB9F89; /* Changes link color on hover */
+}
