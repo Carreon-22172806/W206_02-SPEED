@@ -29,6 +29,8 @@ export class Book {
     @Prop ({required: true})
     DOI: string;
 
+    @Prop({ default: "under-review" })
+    status: string;
 
     @Prop({ default: false })
     rejected: boolean;

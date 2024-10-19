@@ -1,4 +1,3 @@
-import { Date, ObjectId } from "mongoose";
 
 export class CreateBookDto {
     title: string;
@@ -9,4 +8,5 @@ export class CreateBookDto {
     number: number;
     pages: string;
     DOI: string;
+    status: string;
 }
