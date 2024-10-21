@@ -16,6 +16,9 @@ const HomeNavs = () => {
                     <Link href="/analysis">Analysis</Link>
                 </li>
                 <li>
+                    <Link href="/admin-book">AdminBook</Link>
+                </li>
+                <li>
                     <Link href="/login-account/{id}"> Logout - Under Construction </Link>
                 </li>
             </ul>

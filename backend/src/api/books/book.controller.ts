@@ -1,9 +1,11 @@
 import { Body, Controller, Delete,
     Get, HttpException, HttpStatus, 
-    Param, Post, Query, Put } from '@nestjs/common';
+    Param, Post, Put, 
+    UseGuards} from '@nestjs/common';
 import { BookService } from './book.service';
 import { CreateBookDto } from './create-book.dto';
 import { error } from 'console';
+import { AdminGuard } from '../guards/admin.guard';
 
 @Controller('api/books')
 export class BookController {
@@ -13,22 +15,6 @@ export class BookController {
     test() {
         return this.bookService.test();
     }
-
-    // Modified route to handle optional status query parameter
-    @Get('/')
-    async findAllBasedOnStatus(@Query('status') status?: string) {
-        try {
-            return await this.bookService.findAllBasedOnStatus(status); // Pass status to the service if provided
-        } catch (error) {
-            throw new HttpException(
-                {
-                    status: HttpStatus.NOT_FOUND,
-                    error: 'No Books Found',
-                },
-                HttpStatus.NOT_FOUND,
-                );
-            }
-        }
 
     @Get('/')
     async findAll() {
@@ -165,5 +151,14 @@ export class BookController {
       } catch (error) {
         throw new HttpException('Failed to get average rating', HttpStatus.INTERNAL_SERVER_ERROR);
       }
+    }
+
+    @Put(':id/admin-modify')
+    @UseGuards(AdminGuard)
+    async modifyRecordDirectly(
+      @Param('id') id: string,
+      @Body() updateData: any
+    ) {
+      return this.bookService.modifyRecordDirectly(id, updateData);
     }
 }

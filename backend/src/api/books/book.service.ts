@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable, NotFoundException } from "@nestjs/common";
 import { Book } from "./book.schema";
 import { InjectModel } from "@nestjs/mongoose";
 import { Model, Types } from "mongoose";
@@ -73,4 +73,17 @@ export class BookService {
         }
         return book.averageRating;
       }
+
+      async modifyRecordDirectly(id: string, updateData: any): Promise<Book> {
+        const updatedBook = await this.bookModel.findByIdAndUpdate(
+          id,
+          updateData,
+          { new: true, runValidators: true }
+        );
+        if (!updatedBook) {
+          throw new NotFoundException(`Book with ID "${id}" not found`);
+        }
+        return updatedBook;
+      }
+
 }
