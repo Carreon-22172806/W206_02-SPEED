@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import Link from "next/link";
 import { Book } from './Book';
 import HomeNavs from "../HomeNavs";
 import BookCardAdmin from "./BookCard-admin";
@@ -8,38 +7,39 @@ function AnalystCheckingBookList() {
     const [books, setBooks] = useState<Book[]>([]);
     const [filteredBooks, setFilteredBooks] = useState<Book[]>([]);
     const [duplicateMessage, setDuplicateMessage] = useState<string>('');
-    const [filterStatus, setFilterStatus] = useState<string>('under-review'); // Default filter
+    const [filterStatus, setFilterStatus] = useState<string>('under-review'); // Default status filter
     const [searchTerm, setSearchTerm] = useState<string>(''); 
-    const [filterType, setFilterType] = useState<string>('title'); 
+    const [filterType, setFilterType] = useState<string>('title'); // Default filter type
 
     useEffect(() => {
+        // Fetch all books
         fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/books`)
             .then((res) => res.json())
             .then((data) => {
                 setBooks(data);
             })
             .catch((err) => {
-                console.log('Error from ShowBookListUser: ' + err);
+                console.log('Error from AnalystCheckingBookList: ' + err);
             });
     }, []);
 
     useEffect(() => {
-        // Filter books based on the selected status and search term
+        // Filter books based on the selected filter type (Title, Author) and Status
         const filtered = books.filter(book => {
-            const matchesStatus = book.status === filterStatus;
             const searchLower = searchTerm.toLowerCase(); 
+
+            // Check if the book matches the selected filter type (Title or Author)
             const matchesSearch = filterType === 'title'
                 ? book.title.toLowerCase().includes(searchLower)
-                : filterType === 'author'
-                ? book.author.some(author => author.toLowerCase().includes(searchLower))
-                : filterType === 'doi'
-                ? book.DOI.toLowerCase().includes(searchLower)
-                : filterType === 'journalName'
-                ? book.journalName.toLowerCase().includes(searchLower)
-                : true; // Default to true for 'all' or unexpected values
+                : book.author.some(author => author.toLowerCase().includes(searchLower));
 
-            return matchesStatus && matchesSearch;
+            // Check if the book matches the selected status
+            const matchesStatus = book.status === filterStatus;
+
+            // Return true if both search term and status match
+            return matchesSearch && matchesStatus;
         });
+
         setFilteredBooks(filtered);
     }, [books, filterStatus, searchTerm, filterType]); // Re-run this when books, filterStatus, searchTerm, or filterType changes
 
@@ -78,7 +78,7 @@ function AnalystCheckingBookList() {
                 <div className="input-group mb-3" style={{ maxWidth: '100%' }}>
                     <input 
                         type="text" 
-                        placeholder="Search for books..." 
+                        placeholder={`Search for books by ${filterType}`} 
                         value={searchTerm} 
                         onChange={(e) => setSearchTerm(e.target.value)} 
                         className="form-control" 
@@ -90,27 +90,30 @@ function AnalystCheckingBookList() {
                         onChange={(e) => setFilterType(e.target.value)} 
                         style={{ fontSize: '1.2rem', padding: '10px', flex: '0.4', border: '1px solid #ced4da' }} 
                     >
-                        <option value="all">Search by All</option>
                         <option value="title">Title</option>
                         <option value="author">Author</option>
-                        <option value="doi">DOI</option>
-                        <option value="journalName">Journal Name</option>
                     </select>
                 </div>
 
                 {/* Dropdown to filter by status */}
-                <div className="filter-section">
-                    <label htmlFor="statusFilter">Filter by Status: </label>
-                    <select id="statusFilter" value={filterStatus} onChange={(e) => setFilterStatus(e.target.value)}>
+                <div className="filter-section mb-3">
+                    <label htmlFor="statusFilter" style={{ marginRight: '10px' }}>Filter by Status:</label>
+                    <select 
+                        id="statusFilter" 
+                        value={filterStatus} 
+                        onChange={(e) => setFilterStatus(e.target.value)}
+                        style={{ padding: '10px', fontSize: '1.2rem' }}
+                    >
                         <option value="under-review">Under-Review</option>
                         <option value="approved">Approved</option>
                         <option value="rejected">Rejected</option>
                     </select>
                 </div>
 
+                {/* List of filtered books */}
                 <div className="list">
                     {filteredBooks.length === 0
-                        ? 'There is no book record with this status in the system!'
+                        ? 'There are no book records matching the search criteria and status.'
                         : filteredBooks.map((book, k) => (
                             <div key={k}>
                                 <BookCardAdmin book={book} />

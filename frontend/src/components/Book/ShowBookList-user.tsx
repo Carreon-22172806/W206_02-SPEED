@@ -45,28 +45,13 @@ function ShowBookListUser() {
                 return book.title && book.title.toLowerCase().includes(searchLower);
             case 'author':
                 return book.author && book.author.some(author => author.toLowerCase().includes(searchLower));
-            case 'doi':
-                return book.DOI && book.DOI.toLowerCase().includes(searchLower);
-            case 'journalName':
-                return book.journalName && book.journalName.toLowerCase().includes(searchLower);
-            case 'yob':
-                return book.yob && book.yob.toString().includes(searchLower);
-            case 'volume':
-                return book.volume && book.volume.toString().includes(searchLower);
-            case 'number':
-                return book.number && book.number.toString().includes(searchLower);
-            case 'pages':
-                return book.pages && book.pages.toLowerCase().includes(searchLower);
+            case 'status':
+                return book.status && book.status.toLowerCase().includes(searchLower); // Assuming 'status' is a property of the book
             case 'all':
                 return (
                     book.title.toLowerCase().includes(searchLower) ||
                     book.author.some(author => author.toLowerCase().includes(searchLower)) ||
-                    book.DOI.toLowerCase().includes(searchLower) ||
-                    book.journalName.toLowerCase().includes(searchLower) ||
-                    book.yob.toString().includes(searchLower) ||
-                    book.volume.toString().includes(searchLower) ||
-                    book.number.toString().includes(searchLower) ||
-                    book.pages.toLowerCase().includes(searchLower)
+                    (book.status && book.status.toLowerCase().includes(searchLower)) // Include status in the 'all' search
                 );
             default:
                 return true;
@@ -96,17 +81,12 @@ function ShowBookListUser() {
                                 className="form-select" 
                                 value={filterType} 
                                 onChange={(e) => setFilterType(e.target.value)} 
-                                style={{ fontSize: '1.2rem', padding: '10px', flex: '1', border: '1px solid #ced4da' }} // Changed flex to 1
+                                style={{ fontSize: '1.2rem', padding: '10px', flex: '1', border: '1px solid #ced4da' }}
                             >
                                 <option value="all">Search by All</option>
                                 <option value="title">Title</option>
                                 <option value="author">Author</option>
-                                <option value="doi">DOI</option>
-                                <option value="journalName">Journal Name</option>
-                                <option value="yob">Year of Birth</option>
-                                <option value="volume">Volume</option>
-                                <option value="number">Number</option>
-                                <option value="pages">Pages</option>
+                                <option value="status">Status</option> {/* Changed to Status option */}
                             </select>
                             <Link href='/create-book' className='btn btn-outline-warning' style={{ fontSize: '1.2rem', flex: '0.4' }}>
                                 + Add New Article
