@@ -3,21 +3,23 @@ import Link from "next/link";
 import BookCard from "./BookCard";
 import { Book } from './Book';
 import HomeNavs from "../HomeNavs";
-import Image from "next/image";
 
 function ShowBookListUser() {
     const [books, setBooks] = useState<Book[]>([]);
     const [duplicateMessage, setDuplicateMessage] = useState<string>('');
+    const [searchTerm, setSearchTerm] = useState<string>(''); 
+    const [filterType, setFilterType] = useState<string>('title'); 
 
     useEffect(() => {
         fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/books`)
-        .then((res) => res.json())
-        .then((data) => {
-            setBooks(data);
-        })
-        .catch((err) => {
-            console.log('Error from ShowBookListUser: ' + err);
-        });
+            .then((res) => res.json())
+            .then((data) => {
+                setBooks(data);
+                console.log(data); 
+            })
+            .catch((err) => {
+                console.log('Error from ShowBookListUser: ' + err);
+            });
     }, []);
 
     const checkForDuplicates = async (doi: string) => {
@@ -36,6 +38,41 @@ function ShowBookListUser() {
         }
     };
 
+    const filteredBooks = books.filter(book => {
+        const searchLower = searchTerm.toLowerCase(); 
+        switch (filterType) {
+            case 'title':
+                return book.title && book.title.toLowerCase().includes(searchLower);
+            case 'author':
+                return book.author && book.author.some(author => author.toLowerCase().includes(searchLower));
+            case 'doi':
+                return book.DOI && book.DOI.toLowerCase().includes(searchLower);
+            case 'journalName':
+                return book.journalName && book.journalName.toLowerCase().includes(searchLower);
+            case 'yob':
+                return book.yob && book.yob.toString().includes(searchLower);
+            case 'volume':
+                return book.volume && book.volume.toString().includes(searchLower);
+            case 'number':
+                return book.number && book.number.toString().includes(searchLower);
+            case 'pages':
+                return book.pages && book.pages.toLowerCase().includes(searchLower);
+            case 'all':
+                return (
+                    book.title.toLowerCase().includes(searchLower) ||
+                    book.author.some(author => author.toLowerCase().includes(searchLower)) ||
+                    book.DOI.toLowerCase().includes(searchLower) ||
+                    book.journalName.toLowerCase().includes(searchLower) ||
+                    book.yob.toString().includes(searchLower) ||
+                    book.volume.toString().includes(searchLower) ||
+                    book.number.toString().includes(searchLower) ||
+                    book.pages.toLowerCase().includes(searchLower)
+                );
+            default:
+                return true;
+        }
+    });
+
     return (
         <div className='ShowBookListUser'>
             <HomeNavs />
@@ -46,19 +83,43 @@ function ShowBookListUser() {
                         <h2 className="display-4 text-center">SPEED Database</h2>
                     </div>
                     <div className="col-md-11">
-                        <Link href='/' className='btn btn-outline-warning float-left'> <img src="https://img.icons8.com/?size=100&id=12773&format=png&color=000000" alt="Search icon" height={30}/> Search</Link>
-                        <Link href='/create-book' className='btn btn-outline-warning float-right'>
-                            + Add New Article
-                        </Link>
-                        <br />
+                        <div className="input-group mb-3" style={{ maxWidth: '100%' }}>
+                            <input 
+                                type="text" 
+                                placeholder="Search for books..." 
+                                value={searchTerm} 
+                                onChange={(e) => setSearchTerm(e.target.value)} 
+                                className="form-control" 
+                                style={{ fontSize: '1.2rem', padding: '10px', flex: '1' }} 
+                            />
+                            <select 
+                                className="form-select" 
+                                value={filterType} 
+                                onChange={(e) => setFilterType(e.target.value)} 
+                                style={{ fontSize: '1.2rem', padding: '10px', flex: '1', border: '1px solid #ced4da' }} // Changed flex to 1
+                            >
+                                <option value="all">Search by All</option>
+                                <option value="title">Title</option>
+                                <option value="author">Author</option>
+                                <option value="doi">DOI</option>
+                                <option value="journalName">Journal Name</option>
+                                <option value="yob">Year of Birth</option>
+                                <option value="volume">Volume</option>
+                                <option value="number">Number</option>
+                                <option value="pages">Pages</option>
+                            </select>
+                            <Link href='/create-book' className='btn btn-outline-warning' style={{ fontSize: '1.2rem', flex: '0.4' }}>
+                                + Add New Article
+                            </Link>
+                        </div>
                         <br />
                         <hr />
                     </div>
                 </div>
                 <div className="list2">
-                    {books.length === 0
+                    {filteredBooks.length === 0
                         ? 'There is no book record in the system!'
-                        : books.map((book, k) => (
+                        : filteredBooks.map((book, k) => (
                             <div key={k}>
                                 <BookCard book={book} />
                                 <button 
