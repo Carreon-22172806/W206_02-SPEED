@@ -2,24 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-<<<<<<< HEAD
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
-body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
-=======
 
 
 body {
@@ -30,7 +12,6 @@ body {
     #310000
   );
   background-repeat: no-repeat;
->>>>>>> RatingStar
 }
 
 @layer utilities {
@@ -38,8 +19,6 @@ body {
     text-wrap: balance;
   }
 }
-<<<<<<< HEAD
-=======
 .collapse.show {
   visibility: visible;
 }
@@ -168,4 +147,3 @@ body {
   border-color: black; /* Keep the border color consistent */
   font-weight: bold;
 }
->>>>>>> RatingStar
