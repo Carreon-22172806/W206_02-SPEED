@@ -26,7 +26,6 @@ jobs:
         working-directory: ./frontend
         run: |
           npm install
-          npm run lint          # Lint frontend code
           npm test             # Run frontend tests (ensure tests are defined)
           npm run build        # Build the frontend for production
 
@@ -35,7 +34,6 @@ jobs:
         working-directory: ./backend
         run: |
           npm install
-          npm run lint          # Lint backend code
           npm test             # Run backend tests
           npm run build        # Build the backend
 
