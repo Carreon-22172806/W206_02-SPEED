@@ -1,35 +1,48 @@
 import React, { ChangeEvent, FormEvent, useState } from "react";
 import { useRouter } from "next/navigation";
-import Link from "next/link";
 import { Book, DefaultEmptyBook } from "./Book";
-import ShowBookDetails from "./ShowBookDetails";
 import HomeNavs from "../HomeNavs";
 
 const CreateBookComponent = () => {
     const navigate = useRouter();
 
-    const [book, setBook] = useState<Book>(DefaultEmptyBook);
+    const [book, setBook] = useState<Book>({ ...DefaultEmptyBook, status: "under-review" }); // Initialize with status
 
     const onChange = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = event.target;
-        setBook({ ...book, [name]: name === 'author' ? value.split(',').map(a => a.trim ()) : value });
+        setBook({ 
+            ...book, 
+            [name]: name === 'author' ? value.split(',').map(a => a.trim()) : value 
+        });
     };
 
     const onSubmit = (event: FormEvent<HTMLFormElement>) => {
-        event.preventDefault()
-        console.log(book);
+        event.preventDefault();
+        
+        // Ensure status is "under-review"
+        const updatedBook = { ...book, status: "under-review" };
+        
+        console.log(updatedBook);
+
         fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/books`, {
             method: 'POST', 
-            headers: {"Content-Type": "application/json"},
-            body: JSON.stringify(book)})
-            .then((res) => {
-                console.log("Successfully submitted", res);
-                setBook(DefaultEmptyBook);
-                navigate.push("/show-book/{id}"); //Redirect after successful submission
-            })
-            .catch((err) => {
-                console.error('There was a problem with the fetch operation: ', err);
-            });
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(updatedBook)
+        })
+        .then((res) => {
+            if (!res.ok) {
+                throw new Error(`HTTP error! status: ${res.status}`);
+            }
+            return res.json(); // Convert response to JSON
+        })
+        .then((data) => {
+            console.log("Successfully submitted", data);
+            setBook(DefaultEmptyBook);
+            navigate.push(`/show-book/${data.id}`); // Assuming `data.id` contains the created book ID
+        })
+        .catch((err) => {
+            console.error('There was a problem with the fetch operation:', err);
+        });
     };
 
     return (
@@ -51,7 +64,7 @@ const CreateBookComponent = () => {
                             <br />
                             {/* AUTHOR */}
                             <div className="form-group">
-                                <textarea placeholder="Author(s), seperated by commas" name="author" className="form-control" value={book.author?.join(', ')} onChange={onChange} />
+                                <textarea placeholder="Author(s), separated by commas" name="author" className="form-control" value={book.author?.join(', ')} onChange={onChange} />
                             </div>
                             <br />
                             {/* JOURNAL NAME */}
@@ -83,10 +96,8 @@ const CreateBookComponent = () => {
                             <div className="form-group">
                                 <input type="text" placeholder="Article DOI" name="DOI" className="form-control" value={book.DOI} onChange={onChange}/>
                             </div>
-                            <div className="form-group">
-                                <input type="hidden" name="status" value="under-review" />
-                            </div>
-                            <button type="submit" className="btn btn-outline-warning btn-block mt-4 mb-4 w-100"> Submit Article</button>
+                            <br />
+                            <button type="submit" className="btn btn-outline-warning btn-block mt-4 mb-4 w-100">Submit Article</button>
                         </form>
                     </div>
                 </div>

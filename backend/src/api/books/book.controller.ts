@@ -1,6 +1,6 @@
 import { Body, Controller, Delete,
     Get, HttpException, HttpStatus, 
-    Param, Post, Put } from '@nestjs/common';
+    Param, Post, Query, Put } from '@nestjs/common';
 import { BookService } from './book.service';
 import { CreateBookDto } from './create-book.dto';
 import { error } from 'console';
@@ -13,6 +13,22 @@ export class BookController {
     test() {
         return this.bookService.test();
     }
+
+    // Modified route to handle optional status query parameter
+    @Get('/')
+    async findAllBasedOnStatus(@Query('status') status?: string) {
+        try {
+            return await this.bookService.findAllBasedOnStatus(status); // Pass status to the service if provided
+        } catch (error) {
+            throw new HttpException(
+                {
+                    status: HttpStatus.NOT_FOUND,
+                    error: 'No Books Found',
+                },
+                HttpStatus.NOT_FOUND,
+                );
+            }
+        }
 
     @Get('/')
     async findAll() {

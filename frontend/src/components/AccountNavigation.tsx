@@ -13,7 +13,7 @@ const AccountNavigation = () => {
                     <Link href="/sign-up/">Sign Up</Link>
                 </li>
                 <li>
-                    <Link href="/show-book/{id}">Show Book List</Link>
+                    <Link href="/show-book/{id}">Show Speed Database</Link>
                 </li>
                 {/* Add more links as needed */}
             </ul>

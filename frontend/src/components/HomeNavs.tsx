@@ -7,16 +7,16 @@ const HomeNavs = () => {
         <nav className={navStyle.navbar}>
             <ul className={navStyle.navList}>
                 <li>
-                    <Link href="/create-book">Create Article</Link>
+                    <Link href="/show-book/{id}">Show SPEED Database</Link>
                 </li>
                 <li>
-                    <Link href="/moderation/{id}">Moderate Articles</Link>
+                    <Link href="/moderation/{id}">Moderation</Link>
                 </li>
                 <li>
-                    <Link href="/show-book/{id}">Show Book List</Link>
+                    <Link href="/analysis">Analysis</Link>
                 </li>
                 <li>
-                    <Link href="/login-account/{id}"> Logout </Link>
+                    <Link href="/login-account/{id}"> Logout - Under Construction </Link>
                 </li>
             </ul>
         </nav>

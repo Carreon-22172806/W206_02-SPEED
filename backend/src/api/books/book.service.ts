@@ -73,4 +73,14 @@ export class BookService {
         }
         return book.averageRating;
       }
+
+      async findAllBasedOnStatus(status?: string): Promise<any[]> {
+        const query = status ? { status } : {};
+        const books = await this.bookModel.find(query).exec();
+        
+        return books.map((book) => ({
+            ...book.toObject(), // Convert each Mongoose document to a plain JS object
+            existsInDB: true,   // Add the custom field to indicate the book exists
+        }));
+    }    
 }

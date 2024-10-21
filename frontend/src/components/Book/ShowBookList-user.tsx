@@ -7,16 +7,19 @@ import HomeNavs from "../HomeNavs";
 function ShowBookListUser() {
     const [books, setBooks] = useState<Book[]>([]);
     const [duplicateMessage, setDuplicateMessage] = useState<string>('');
+    const [searchTerm, setSearchTerm] = useState<string>(''); 
+    const [filterType, setFilterType] = useState<string>('title'); 
 
     useEffect(() => {
         fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/books`)
-        .then((res) => res.json())
-        .then((data) => {
-            setBooks(data);
-        })
-        .catch((err) => {
-            console.log('Error from ShowBookListUser: ' + err);
-        });
+            .then((res) => res.json())
+            .then((data) => {
+                setBooks(data);
+                console.log(data); 
+            })
+            .catch((err) => {
+                console.log('Error from ShowBookListUser: ' + err);
+            });
     }, []);
 
     const checkForDuplicates = async (doi: string) => {
@@ -35,6 +38,26 @@ function ShowBookListUser() {
         }
     };
 
+    const filteredBooks = books.filter(book => {
+        const searchLower = searchTerm.toLowerCase(); 
+        switch (filterType) {
+            case 'title':
+                return book.title && book.title.toLowerCase().includes(searchLower);
+            case 'author':
+                return book.author && book.author.some(author => author.toLowerCase().includes(searchLower));
+            case 'status':
+                return book.status && book.status.toLowerCase().includes(searchLower); // Assuming 'status' is a property of the book
+            case 'all':
+                return (
+                    book.title.toLowerCase().includes(searchLower) ||
+                    book.author.some(author => author.toLowerCase().includes(searchLower)) ||
+                    (book.status && book.status.toLowerCase().includes(searchLower)) // Include status in the 'all' search
+                );
+            default:
+                return true;
+        }
+    });
+
     return (
         <div className='ShowBookListUser'>
             <HomeNavs />
@@ -45,18 +68,38 @@ function ShowBookListUser() {
                         <h2 className="display-4 text-center">SPEED Database</h2>
                     </div>
                     <div className="col-md-11">
-                        <Link href='/create-book' className='btn btn-outline-warning float-right'>
-                            + Add New Book
-                        </Link>
-                        <br />
+                        <div className="input-group mb-3" style={{ maxWidth: '100%' }}>
+                            <input 
+                                type="text" 
+                                placeholder="Search for books..." 
+                                value={searchTerm} 
+                                onChange={(e) => setSearchTerm(e.target.value)} 
+                                className="form-control" 
+                                style={{ fontSize: '1.2rem', padding: '10px', flex: '1' }} 
+                            />
+                            <select 
+                                className="form-select" 
+                                value={filterType} 
+                                onChange={(e) => setFilterType(e.target.value)} 
+                                style={{ fontSize: '1.2rem', padding: '10px', flex: '1', border: '1px solid #ced4da' }}
+                            >
+                                <option value="all">Search by All</option>
+                                <option value="title">Title</option>
+                                <option value="author">Author</option>
+                                <option value="status">Status</option> {/* Changed to Status option */}
+                            </select>
+                            <Link href='/create-book' className='btn btn-outline-warning' style={{ fontSize: '1.2rem', flex: '0.4' }}>
+                                + Add New Article
+                            </Link>
+                        </div>
                         <br />
                         <hr />
                     </div>
                 </div>
-                <div className="list">
-                    {books.length === 0
+                <div className="list2">
+                    {filteredBooks.length === 0
                         ? 'There is no book record in the system!'
-                        : books.map((book, k) => (
+                        : filteredBooks.map((book, k) => (
                             <div key={k}>
                                 <BookCard book={book} />
                                 <button 

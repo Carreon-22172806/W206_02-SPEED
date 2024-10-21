@@ -10,7 +10,7 @@ function ShowBookDetails() {
     const [book, setBook] = useState<Book>(DefaultEmptyBook);
     const params = useParams(); // Get URL parameters
     const router = useRouter();
-    const id = params.id; // Extract 'id' from URL
+    const id = Array.isArray(params.id) ? params.id[0] : params.id; // Ensure id is a string
 
     useEffect(() => {
         if (id) {
@@ -24,7 +24,7 @@ function ShowBookDetails() {
     const onDeleteClick = (id: string) => {
         fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/books/${id}`, { method: 'DELETE' })
             .then(() => {
-                router.push('/show-book/{id}');
+                router.push('/show-books/{id}'); // Redirect to the list of books after deletion
             })
             .catch((err) => console.log('Error from ShowBookDetails_deleteClick: ' + err));
     };
@@ -37,51 +37,61 @@ function ShowBookDetails() {
                         <th scope='row'> 1 </th>
                         <td> Article ID </td>
                         <td>{id}</td>
+                        <td> <button> Hide </button></td>
                     </tr>
                     <tr>
                         <th scope='row'> 2 </th>
                         <td> Title </td>
                         <td>{book.title}</td>
+                        <td> <button> Hide </button></td>
                     </tr>
                     <tr>
                         <th scope='row'> 3 </th>
                         <td> Author </td>
                         <td>{book.author}</td>
+                        <td> <button> Hide </button></td>
                     </tr>
                     <tr>
                         <th scope='row'> 4 </th>
                         <td> Journal / Conference Name </td>
                         <td>{book.journalName}</td>
+                        <td> <button> Hide </button></td>
                     </tr>
                     <tr>
                         <th scope='row'> 5 </th>
                         <td> Year of Published </td>
                         <td>{book.yob}</td>
+                        <td> <button> Hide </button></td>
                     </tr>
                     <tr>
                         <th scope='row'> 6 </th>
                         <td> Article Volume </td>
                         <td>{book.volume}</td>
+                        <td> <button> Hide </button></td>
                     </tr>
                     <tr>
                         <th scope='row'> 7 </th>
                         <td> Article Number </td>
                         <td>{book.number}</td>
+                        <td> <button> Hide </button></td>
                     </tr>
                     <tr>
                         <th scope='row'> 8 </th>
                         <td> Article Pages </td>
                         <td>{book.pages}</td>
+                        <td> <button> Hide </button></td>
                     </tr>
                     <tr>
                         <th scope='row'> 9 </th>
                         <td> Article DOI </td>
                         <td>{book.DOI}</td>
+                        <td> <button> Hide </button></td>
                     </tr>
                     <tr>
                         <th scope='row'> 10 </th>
                         <td> Status </td>
-                        <td>{book.status = "under-review"}</td>
+                        <td>{book.status}</td>
+                        <td> <button> Hide </button></td>
                     </tr>
                 </tbody>
             </table>
@@ -104,12 +114,26 @@ function ShowBookDetails() {
                     </div>
                     <div className="col-md-10 m-auto">{BookItem}</div>
                     <div className="col-md-6 m-auto">
-                        
+                    <div className="col-md-6 m-auto">
+                        <button className="btn btn-danger" onClick={() => onDeleteClick(id)}>
+                            Delete Book
+                        </button>
+                    </div>   
                     </div>
                     <div className="col-md-6 m-auto">
                         <Link href={`/edit-book/${id}`} className="btn btn-outline-info btn-lg btn-block">
                             Edit Book
                         </Link>
+                    </div>
+
+                    <div className="col-md-6 m-auto">
+                        <button className='btn btn-success' onClick={() => console.log('Accepted')}>Accept</button>
+                        <button className="btn btn-danger" onClick={() => console.log('Rejected')}>Reject</button>
+                        <br />
+                        <textarea
+                            placeholder="Reasons/Comments: "
+                            style={{ width: '100%', height: '100px', resize: 'none' }} // Adjust size as needed
+                        ></textarea>
                     </div>
                 </div>
             </div>

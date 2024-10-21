@@ -47,15 +47,16 @@ const BookCardAdmin = ({ book }: IProp) => {
         <div className="card-container3">
             <img src="https://images.unsplash.com/photo-1495446815901-a7297e633e8d" alt="Books" height={200} onClick={onClick} />
             <div className="details">
-                <p> Article Title:            {book.title} </p>
-                <p> Article Author: {book.author} </p>
-                <p> Article Year of Published: {book.yob} </p>
-                <p> Article Journal/Conference Name {book.journalName} </p>
-                <p> Article ID {book._id}</p>
-                <p> Article Status {book.status}</p>
-                <p> Average Rating: {averageRating.toFixed(1)}</p>
+                <table>
+                <tr> <td>Article ID: </td><td>{book._id} </td></tr>
+                <tr> <td>Article Title: </td><td>{book.title} </td></tr>
+                <tr> <td>Article Author: </td><td>{book.author} </td></tr>
+                <tr> <td>Article Year of Published: </td><td>{book.yob} </td></tr>
+                <tr> <td>Article Journal Name: </td><td>{book.journalName} </td></tr>
+                <tr> <td>Article Status: </td><td>{book.status} </td></tr>
+                <tr> <td>Average Rating: </td><td>{averageRating.toFixed(1)} </td></tr>
                 <br />
-
+                </table>
 
                 <Link href={`/show-book-details/${book._id}`} className='btn btn-outline-warning float-right'>
                     Configure Article
