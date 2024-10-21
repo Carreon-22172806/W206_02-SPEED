@@ -55,7 +55,7 @@ const LoginAccount = () => {
                     <h2 className="text-center">Login</h2>
                     <br />
                     <form onSubmit={onSubmit}>
-                        <table className={style.LoginContent}>
+                        <div className={style.LoginContent}>
                             <label htmlFor="username" className="form-label">Username</label>
                             <input
                                 type="text"
@@ -76,7 +76,7 @@ const LoginAccount = () => {
                                 onChange={handleChange}
                                 required
                             />
-                        </table>
+                        </div>
                         <button type="submit" className="btn btn-outline-warning btn-block">Login</button>
                     </form>
                     <div className="mt-3">

@@ -60,7 +60,7 @@ const SignUpAccount = () => {
                     <br />
                     <form onSubmit={onSubmit}>
                         <div>
-                            <table className={style.SignUpContent}>
+                            <div className={style.SignUpContent}>
                                 <tr>
                                 <td>
                                     <label htmlFor="firstName" className="form-label">First Name</label>
@@ -110,7 +110,7 @@ const SignUpAccount = () => {
                             />
                                 </tr>                        
 
-                            </table>
+                            </div>
                         </div>
 
                         <div className="mb-3">

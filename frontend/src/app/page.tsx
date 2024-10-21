@@ -8,7 +8,7 @@ import Login from "./login-account/[id]/page";
 export default function Home() {
   return (
     <main>
-      <ShowBookDetails />
+      <LoginAccount />
     </main>
   );
 }
