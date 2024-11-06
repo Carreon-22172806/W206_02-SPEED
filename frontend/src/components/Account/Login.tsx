@@ -80,7 +80,7 @@ const LoginAccount = () => {
                         <button type="submit" className="btn btn-outline-warning btn-block">Login</button>
                     </form>
                     <div className="mt-3">
-                        Don't have an account?<Link href="/sign-up"> <u>Sign up now!</u></Link>
+                        Don&apos;t have an account?<Link href="/sign-up"> <u>Sign up now!</u></Link>
                     </div>
                 </div>
             </div>

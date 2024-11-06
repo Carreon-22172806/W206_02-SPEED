@@ -30,8 +30,8 @@ function AnalystCheckingBookList() {
 
             // Check if the book matches the selected filter type (Title or Author)
             const matchesSearch = filterType === 'title'
-                ? book.title.toLowerCase().includes(searchLower)
-                : book.author.some(author => author.toLowerCase().includes(searchLower));
+                ? book.title?.toLowerCase().includes(searchLower)
+                : book.author?.some(author => author.toLowerCase().includes(searchLower));
 
             // Check if the book matches the selected status
             const matchesStatus = book.status === filterStatus;

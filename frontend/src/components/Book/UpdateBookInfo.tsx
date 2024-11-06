@@ -1,7 +1,6 @@
-import React, { useState, useEffect, ChangeEvent, FormEvent, ChangeEventHandler } from "react";
+import React, { useState, useEffect, ChangeEvent, FormEvent } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { Book, DefaultEmptyBook } from "./Book";
-import Link from "next/link";
 import HomeNavs from "../HomeNavs";
 
 function UpdateBookInfo() {
@@ -11,9 +10,7 @@ function UpdateBookInfo() {
 
     useEffect(() => {
         fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/books/${id}`)
-            .then((res) => {
-                return res.json();
-            })
+            .then((res) => res.json())
             .then((json) => {
                 setBook(json);
             })
@@ -29,18 +26,23 @@ function UpdateBookInfo() {
     const textAreaOnChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
         setBook({ ...book, [event.target.name]: event.target.value});
     }
-
+    
     const onSubmit = (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-
-        fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/books/${id}`, {method: 'PUT', headers: {"Content-Type": "application/json"}, body: JSON.stringify(book)})
-            .then((res) => {
-                router.push(`/show-book-details/${id}`);
-            })
-            .catch((err) => {
-                console.log("Error from UpdateBookInfo: " + err);
-            });
+    
+        fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/books/${id}`, {
+            method: 'PUT',
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(book)
+        })
+        .then(() => {
+            router.push(`/show-book-details/${id}`);
+        })
+        .catch((err) => {
+            console.log("Error from UpdateBookInfo: " + err);
+        });
     };
+    
 
     return (
         <div className="UpdateBookInfo">

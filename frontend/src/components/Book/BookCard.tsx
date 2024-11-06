@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Book } from './Book';
 import { useRouter } from "next/navigation";
-import Link from "next/link";
+import Image from "next/image";
 
 interface IProp {
     book?: Book;
@@ -44,7 +44,7 @@ const BookCard = ({ book }: IProp) => {
 
     return (
         <div className="card-container">
-            <img src="https://images.unsplash.com/photo-1495446815901-a7297e633e8d" alt="Books" height={200} onClick={onClick} />
+            <Image src="https://images.unsplash.com/photo-1495446815901-a7297e633e8d" alt="Books" height={200} onClick={onClick} />
             <div className="details">
                 <h1>{book.title}</h1>
                 <h3>{book.author} <br /> {book.yob}</h3>

@@ -49,9 +49,9 @@ function ShowBookListUser() {
                 return book.status && book.status.toLowerCase().includes(searchLower); // Assuming 'status' is a property of the book
             case 'all':
                 return (
-                    book.title.toLowerCase().includes(searchLower) ||
-                    book.author.some(author => author.toLowerCase().includes(searchLower)) ||
-                    (book.status && book.status.toLowerCase().includes(searchLower)) // Include status in the 'all' search
+                    book.title?.toLowerCase().includes(searchLower) ||
+                    book.author?.some(author => author.toLowerCase().includes(searchLower)) ||
+                    (book.status && book.status?.toLowerCase().includes(searchLower)) // Include status in the 'all' search
                 );
             default:
                 return true;

@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import Link from "next/link";
 import BookCardAdmin from "./BookCard-admin";
 import { Book } from './Book';
 import HomeNavs from "../HomeNavs";
