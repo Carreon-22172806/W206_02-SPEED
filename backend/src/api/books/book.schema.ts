@@ -1,5 +1,5 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
-import { Date, HydratedDocument } from "mongoose";
+import { HydratedDocument } from "mongoose";
 
 export type BookDocument = HydratedDocument<Book>;
 
@@ -28,6 +28,18 @@ export class Book {
 
     @Prop ({required: true})
     DOI: string;
+
+    @Prop({ default: "under-review" })
+    status: string;
+
+    @Prop({ default: false })
+    rejected: boolean;
+
+    @Prop({ type: [Number], default: [] })
+    ratings: number[];
+
+    @Prop({ type: Number, default: 0 })
+    averageRating: number;
 }
 
 export const BookSchema = SchemaFactory.createForClass(Book);
