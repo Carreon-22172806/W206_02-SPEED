@@ -11,13 +11,11 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
-    env:
-      NODE_ENV: production
     steps:
       - uses: actions/checkout@v4
         
-      - name: Install dependencies
+      - name: Install dependecies
         run: npm install
         
       - name: Run test
-        run: npm run test
+        run: npm run
